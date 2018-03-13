@@ -13,7 +13,7 @@ int Factorial(int value) {
   else
   {
     if (value <=1)
-      return 1;
+      return 2;
     else
       return value * Factorial(value - 1);
   }
