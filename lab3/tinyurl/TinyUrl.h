@@ -16,7 +16,7 @@ using namespace std;
 namespace tinyurl{
     typedef struct TinyUrlCodec{
         array <char,6> firstHash;
-        vector<array <char,6>> Hashes ;
+        vector<string> hashes;
         vector <string> urls;
 
     }TinyUrlCodec;

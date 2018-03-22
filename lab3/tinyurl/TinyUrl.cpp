@@ -19,7 +19,7 @@ namespace tinyurl {
 
    unique_ptr<TinyUrlCodec> Init(){
        auto codex = make_unique<TinyUrlCodec>();
-       codex.get()->firstHash = {'0','0','0','0','0','0'};
+       codex->firstHash = {'0','0','0','0','0','0'};
        return codex;
     }
 
@@ -47,34 +47,29 @@ namespace tinyurl {
     std::string Encode(const std::string &url, std::unique_ptr<TinyUrlCodec> *codec){
         NextHash(&(*codec)->firstHash);
 
-        (*codec)->Hashes.push_back((*codec)->firstHash);
 
-        (*codec)->urls.push_back(url);
-        std::string hash;
+        std::string hash = "";
         for (int i = 0; i < (*codec)->firstHash.size(); ++i) {
 
             hash += (*codec)->firstHash[i];
         }
+        (*codec)->hashes.push_back(hash);
+        (*codec)->urls.push_back(url);
         return hash;
     }
 
     std::string Decode(const std::unique_ptr<TinyUrlCodec> &codec, const std::string &hash){
-        int index = 0;
-        for (int i = 0; i < codec->Hashes.size(); ++i) {
-            bool a = true;
 
-            for (int j = 0; j < codec->Hashes[i].size(); ++j) {
-                if(codec->Hashes[i][j] != hash[j]){
-                    a = false;
-                    break;
-                }
-            }
-            if(a){
+        int index = 0;
+        for (int i = 0; i < codec->hashes.size(); ++i) {
+            if(codec->hashes[i] == hash){
                 index = i;
                 break;
             }
+
         }
 
         return codec->urls[index];
+
     }
 }
