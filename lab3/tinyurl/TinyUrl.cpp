@@ -70,6 +70,5 @@ namespace tinyurl {
         }
 
         return codec->urls[index];
-
     }
 }
