@@ -1,0 +1,82 @@
+//
+// Created by bobo on 03.04.18.
+//
+
+#ifndef JIMP_EXERCISES_SIMPLEJSON_H
+#define JIMP_EXERCISES_SIMPLEJSON_H
+
+#include <experimental/optional>
+#include <string>
+#include <map>
+#include <vector>
+#include <iostream>
+namespace nets {
+    class JsonValue {
+    public:
+        ~JsonValue();
+        JsonValue(int value);
+        JsonValue(double value);
+        JsonValue(bool value);
+        JsonValue(std::string value);
+        JsonValue(JsonValue value);
+        JsonValue(vector<JsonValue> values);
+        JsonValue(map<string,JsonValue> values);
+        std::experimental::optional<JsonValue> ValueByName(const std::string &name) const;
+        std::string ToString() const;
+
+    private:
+        int i_;
+        double d_;
+        bool b_;
+        std::string s_;
+        JsonValue js_;
+        vector<JsonValue> v_;
+        map<string,JsonValue> m_;
+
+    };
+
+}
+
+#endif //JIMP_EXERCISES_SIMPLEJSON_H
+
+//
+// Created by bobo on 03.04.18.
+//
+
+#include "SimpleJson.h"
+namespace nets {
+
+    JsonValue::~JsonValue(){
+        m_.clear();
+
+    }
+    JsonValue::JsonValue(int value){
+        i_ = value;
+    }
+    JsonValue::JsonValue(double value){
+        d_ = value;
+    }
+    JsonValue::JsonValue(bool value){
+        b_ = value;
+    }
+    JsonValue::JsonValue(std::string value){
+        s_ = value;
+    }
+    JsonValue::JsonValue(JsonValue value){
+        js_ = value;
+    }
+    JsonValue::JsonValue(vector<JsonValue> values){
+        v_= values;
+    }
+    JsonValue::JsonValue(map<string,JsonValue> values){
+        m_ = values;
+    }
+
+    std::experimental::optional<JsonValue> JsonValue::ValueByName(const std::string &name) const{
+        return nullptr;
+    }
+    std::string JsonValue::ToString() const{
+        return "";
+    }
+
+}

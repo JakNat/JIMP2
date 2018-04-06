@@ -275,8 +275,8 @@ $range j2 2..i
 // 'argK', and refer to its type by 'argK_type'.  For example:
 //
 //   ACTION(IncrementArg1) {
-//     arg1_type temp = arg1;
-//     return ++(*temp);
+//     arg1_type text_ = arg1;
+//     return ++(*text_);
 //   }
 //
 // allows you to write

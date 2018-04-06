@@ -9,6 +9,7 @@
 #include <StringUtility.h>
 #include <SimpleTemplateEngine.h>
 
+
 using ::nets::View;
 using ::std::make_unique;
 using ::utility::FromString;
@@ -30,15 +31,15 @@ TEST_P(TemplateEngineTests, DefineViewClassWithRenderMethod) {
 }
 
 std::vector<TestParam> templateEngineTestData
-    {{{"Hello {{name}}! How are you today? My name is {{program}}!",
-       {{"name", "Zbigniew"}, {"program", "Borg"}}}, "Hello Zbigniew! How are you today? My name is Borg!"},
-     {{"Person:\n\tName: {{name}}\n\tSurname: {{surname}}\n\tAge: {{age}}\n",
-       {{"name", "Jan"}, {"surname", "Kowalski"}, {"age", "33"}}
-      }, "Person:\n\tName: Jan\n\tSurname: Kowalski\n\tAge: 33\n"},
-     {{"Person:\n\tName: {{name}}\n\t2nd time name: {{name}}\n\tAge: {{age}}\n\tNo surname!",
-       {{"name", "Jan"}, {"surname", "Kowalski"}, {"age", "33"}}
-      }, "Person:\n\tName: Jan\n\t2nd time name: Jan\n\tAge: 33\n\tNo surname!"}
-    };
+        {{{"Hello {{name}}! How are you today? My name is {{program}}!",
+                  {{"name", "Zbigniew"}, {"program", "Borg"}}}, "Hello Zbigniew! How are you today? My name is Borg!"},
+         {{"Person:\n\tName: {{name}}\n\tSurname: {{surname}}\n\tAge: {{age}}\n",
+                  {{"name", "Jan"}, {"surname", "Kowalski"}, {"age", "33"}}
+          }, "Person:\n\tName: Jan\n\tSurname: Kowalski\n\tAge: 33\n"},
+         {{"Person:\n\tName: {{name}}\n\t2nd time name: {{name}}\n\tAge: {{age}}\n\tNo surname!",
+                  {{"name", "Jan"}, {"surname", "Kowalski"}, {"age", "33"}}
+          }, "Person:\n\tName: Jan\n\t2nd time name: Jan\n\tAge: 33\n\tNo surname!"}
+        };
 
 INSTANTIATE_TEST_CASE_P(TemplateEngineTestsFixture,
                         TemplateEngineTests,
