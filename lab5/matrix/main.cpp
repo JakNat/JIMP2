@@ -1,20 +1,21 @@
-//
-// Created by bobo on 06.04.18.
-//
-
-
-
-#include <complex>
+#include <iostream>
 #include "Matrix.h"
+using namespace std;
+using namespace algebra;
 
-using ::algebra::Matrix;
+int main(){
+    Matrix m1("[1 2; 3 4]");
+    Matrix m2("[1 1; 2 2]");
+    Matrix m3{{1.0i, 0., 0.}, {0., 1.0i, 0.}, {0., 0., 1.0i}};
 
-    int main() {
-        int a = 2;
-        Matrix matrix{a, a};
-        matrix.setValue(0,0,1.);
-        matrix.setValue(0,1,2.);
-        matrix.setValue(1,0,3.);
-        matrix.setValue(1,1,4.);
-        matrix.print();
-    }
+    cout << "Macierz pierwsza: \n" << m1.Print() << endl;
+    cout << "Macierz druga: \n" << m2.Print() << endl;
+
+  //  cout << "Dodawanie" << m1.Add(m2).Print() << endl;
+    cout << "Odejmowanie\n" << (m1.Sub(m2)).Print() << endl;
+    cout << "Mnożenie\n" << (m1.Mul(m2)).Print() << endl;
+    cout << "Dzielenie\n" << (m1.Div(m2)).Print() << endl;
+    cout << "Potęgowanie\n" << (m1.Pow(2)).Print() << endl;
+    cout << "Potęgowanie\n" << (m2.Pow(2)).Print() << endl;
+    cout << "m3: \n" << m3.Print();
+}

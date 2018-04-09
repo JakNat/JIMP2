@@ -5,36 +5,46 @@
 #ifndef JIMP_EXERCISES_MATRIX_H
 #define JIMP_EXERCISES_MATRIX_H
 
+using namespace std;
 
 #include <complex>
+#include <vector>
+
 namespace algebra {
     class Matrix {
     private:
         int height_;
-        int weight_;
+        int width__;
         std::complex<double> nr_;
 
         std::complex<double> **matrix_;
 
     public:
         Matrix();
-
         ~Matrix();
-
         Matrix(int height, int weight);
-
         Matrix(const Matrix &matrix);
-
         Matrix(std::string paramets);
 
-        double getValue(int height, int weight);
+        Matrix(std::initializer_list<std::vector<std::complex<double>>> matrix_list);
+        Matrix Add(const Matrix &matrix) const;
+       // Matrix Add(Matrix matrix);
+        Matrix Sub(const Matrix &matrix);
+        Matrix Mul(const Matrix &matrix);
+        Matrix Mul(std::complex<double> value);
 
-        void setValue(int height, int weight, std::complex<double > value);
+        Matrix Div(const Matrix &matrix);
+        Matrix Div(std::complex<double> value);
+        std::pair<size_t, size_t> Size();
 
-        Matrix add(const Matrix &matrix);
+        Matrix Pow(int value);
 
-        Matrix sub(const Matrix &matrix);
-        void print();
+        std::complex<double>  GetValue(int height, int weight);
+        void SetValue(int height, int weight, std::complex<double> value);
+
+
+
+        std::string Print() const ;
 
     };
 }
