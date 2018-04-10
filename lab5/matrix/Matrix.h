@@ -22,8 +22,16 @@ namespace algebra {
     public:
         Matrix();
         ~Matrix();
+        Matrix(const Matrix &Matrix);
+        //2. konstruktor przenoszący
+   //     Matrix(Matrix &&Matrix);
+        //3. operator przypisania kopiujący
+     //   Matrix &operator=(const Matrix &Matrix);
+        //4. operator przypisania przenoszący
+       // Matrix &operator=(Matrix &&Matrix);;
         Matrix(int height, int weight);
-        Matrix(const Matrix &matrix);
+        void usun();
+
         Matrix(std::string paramets);
 
         Matrix(std::initializer_list<std::vector<std::complex<double>>> matrix_list);
