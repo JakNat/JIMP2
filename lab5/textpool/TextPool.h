@@ -16,33 +16,14 @@ namespace pool {
     class TextPool {
     public:
         TextPool();
-       // Counter(const std::initializer_list< A> &elements) : counter_{elements};
-
-      //  TextPool(const std::initializer_list< std::experimental::string_view> &elements) : list_{elements}{}
-
-        //1. konstruktor kopiujący
-        TextPool(const TextPool &textPool);
-
-        //2. konstruktor przenoszący
-        TextPool(TextPool &&textPool);
-
-        //3. operator przypisania kopiujący
-        TextPool &operator=(const TextPool &textPool);
-
-        //4. operator przypisania przenoszący
-        TextPool &operator=(TextPool &&textPool);
-
-        //5. Destruktor
         ~TextPool();
-
+        TextPool(TextPool &&textPool);
+        TextPool(const std::initializer_list<std::string> &words);
+        TextPool &operator=(TextPool &&textPool);
         std::experimental::string_view Intern(const std::string &str);
-
         size_t StoredStringCount() const;
-        std::vector<const std::experimental::string_view> list_;
-      //std::set<const std::experimental::string_view> list_;
-
     private:
-      //  std::set<const std::experimental::string_view> list_;
+        std::set<std::string> list_;
     };
 }
 

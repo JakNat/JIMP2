@@ -4,16 +4,11 @@
 
 #include <experimental/string_view>
 #include <iostream>
-#include "TextPool.h"
+//#include "TextPool.h"
+using std::string;
 
-using namespace std;
-using namespace pool;
-int main(){
-    string oniin = "kjbb";
-    std::experimental::string_view name = "imim";
-    TextPool textPool{"mlkm", "lnkj", "njk" "knjkn"};
-    for(auto s : textPool.list_){
-        cout << s <<endl;
-
-    }
+#include <iostream>
+int f(int &a, int &b) { a = 3; b = 4; return a + b; }
+int main () {
+    int a = 1; int b = 2; int c = f(a,a); std::cout << a << b <<c;
 }
