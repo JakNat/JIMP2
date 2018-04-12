@@ -15,7 +15,7 @@ namespace algebra {
     private:
         int height_;
         int width__;
-        std::complex<double> nr_;
+     //   std::complex<double> nr_;
 
         std::complex<double> **matrix_;
 
@@ -24,11 +24,11 @@ namespace algebra {
         ~Matrix();
         Matrix(const Matrix &Matrix);
         //2. konstruktor przenoszący
-   //     Matrix(Matrix &&Matrix);
+        Matrix(Matrix &&Matrix);
         //3. operator przypisania kopiujący
-     //   Matrix &operator=(const Matrix &Matrix);
+        Matrix &operator=(const Matrix &Matrix);
         //4. operator przypisania przenoszący
-       // Matrix &operator=(Matrix &&Matrix);;
+        Matrix &operator=(Matrix &&Matrix);
         Matrix(int height, int weight);
         void usun();
 

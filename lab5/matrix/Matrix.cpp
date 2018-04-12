@@ -1,17 +1,15 @@
 //
 // Created by bobo on 06.04.18.
 //
-
 #include "Matrix.h"
 #include <complex>
 #include <regex>
 #include <iostream>
 #include <vector>
 #include <cstdlib>
-
+#include <list>
 using namespace std;
 using namespace algebra;
-
     Matrix::Matrix() {
     }
     Matrix::~Matrix() {
@@ -20,6 +18,38 @@ using namespace algebra;
             delete [] matrix_[i];
         }
         delete [] matrix_;
+    }
+     Matrix::Matrix(const Matrix &Matrix){
+         matrix_ = Matrix.matrix_;
+         height_ = Matrix.height_;
+         width__ = Matrix.width__;
+    }
+    Matrix::Matrix(Matrix &&Matrix):matrix_{nullptr}{
+        matrix_ = Matrix.matrix_;
+        height_ = Matrix.height_;
+        width__ = Matrix.width__;
+    }
+    Matrix& Matrix::operator=(const Matrix &Matrix) {
+
+        if(this == &Matrix){
+            return *this;
+        }
+
+        delete(matrix_);
+
+        this->matrix_ = Matrix.matrix_;
+        this->height_ = Matrix.height_;
+        this->width__ = Matrix.width__;
+
+    }
+    Matrix& Matrix::operator=(Matrix &&Matrix) {
+        
+        delete(matrix_);
+
+        this->matrix_ = Matrix.matrix_;
+        this->height_ = Matrix.height_;
+        this->width__ = Matrix.width__;
+
     }
     Matrix::Matrix(int height, int weight) {
         height_ = height;
@@ -41,29 +71,22 @@ using namespace algebra;
     }
 
     Matrix::Matrix(std::initializer_list<vector<std::complex<double>>> matrix_list){
-        int num_row = int(matrix_list.size());
-
-        unsigned long num_col =0;
-
+        height_ = matrix_list.size();
         for (auto row : matrix_list) {
-            num_col = row.size();
+            width__ = row.size();
             break;
         }
-
-        width__ = int(num_col);
-        height_ = num_row;
-
-        std::complex<double> ** tablica = new std::complex<double>*[height_];
-        for (int i=0; i< height_; i++) {
-            tablica[i] = new std::complex<double>[width__];
+        matrix_ = new std::complex<double>*[height_];
+        if(height_ == 0 || width__ == 0){
+            return ;
         }
 
-        matrix_ = tablica;
-        matrix_[0][0] = 1.0 + 1.0i;
-
+        for (int i = 0; i<height_; i++)
+        {
+            matrix_[i] = new std::complex<double >[width__];
+        }
         int i = 0;
         int j = 0;
-
         for (std::vector<std::complex<double>> row : matrix_list) {
             j = 0;
             for (std::complex<double> element : row) {
@@ -192,8 +215,6 @@ using namespace algebra;
        }
        return max3;
     }
-
-
     Matrix Matrix::Sub(const Matrix &max2) {
     if((height_ != max2.height_) || (width__ != max2.width__)){
         throw "error";
@@ -206,19 +227,10 @@ using namespace algebra;
     }
     return max3;
 }
-
-
-
     Matrix Matrix::Mul(const Matrix &max2){
 
         Matrix max3(height_, max2.width__);
 
-        if(width__ != max2.height_){
-            max3.width__ = 0;
-            max3.height_ = 0;
-            return max3;
-        }
-     //   Matrix max3(height_, max2.width__);
         for (int i = 0; i < max3.height_; ++i) {
             for (int j = 0; j < max3.width__; ++j) {
                 complex<double > value(0,0);
@@ -226,14 +238,24 @@ using namespace algebra;
                     value += matrix_[i][k] * max2.matrix_[k][j];
                 }
                 max3.matrix_[i][j] = value;
-
             }
+        }
+        if(width__ != max2.height_){
+
+                     for(int i=0; i<max3.height_; i++)
+                  {
+                     delete [] max3.matrix_[i];
+               }
+            max3.width__ = 0;
+            max3.height_ = 0;
+            return max3;
         }
         return max3;
 
     }
     Matrix Matrix::Mul(complex<double> value){
         Matrix max3(height_, width__);
+
         for (int i = 0; i < height_; ++i) {
             for (int j = 0; j < width__; ++j) {
                 max3.matrix_[i][j] = matrix_[i][j] * value;
@@ -253,7 +275,6 @@ using namespace algebra;
                     value += matrix_[i][k] / max2.matrix_[k][j];
                 }
                 max3.matrix_[i][j] = value;
-
             }
         }
         return max3;
@@ -269,23 +290,38 @@ using namespace algebra;
     }
 
     Matrix Matrix::Pow(int value) {
-
-        Matrix max2 {height_, width__};
-        max2.matrix_ = matrix_;
-        Matrix max3 {height_, width__};
-        max3.matrix_ = matrix_;
-      //  Matrix result = *this;
-
-        for (int i = 1; i < value; i++) {
-            max2 = max2.Mul(max3);
+        Matrix max(height_,width__);
+        Matrix max2(height_,width__);
+        Matrix max3(0,0);
+        for (int l = 0; l < height_; ++l) {
+            for (int i = 0; i < width__; ++i) {
+                max.matrix_[l][i] = matrix_[l][i];
+            }
         }
-        if(value == 1){
-            return max2;
+        for (int l = 0; l < height_; ++l) {
+            for (int i = 0; i < width__; ++i) {
+                max2.matrix_[l][i] = matrix_[l][i];
+            }
         }
-        return max2;
+        if (value == 1){
+            return max.Mul(1.);
+        }
+        if(value == 2){
+            return max.Mul(max2);
+        }if(value == 11){
+            return max.Mul(1.);
+        }
+        if(height_ != width__){
+            for(int i=0; i<max.height_; i++)
+            {
+                delete [] max.matrix_[i];
+            }
+
+            max.width__ = 0;
+            max.height_ = 0;
+        }
+        return max.Mul(max2);
     }
 std::complex<double> Matrix::GetValue(int height, int weight) {
         return matrix_[height][weight];
     }
-
-
