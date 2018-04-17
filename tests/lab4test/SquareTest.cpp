@@ -5,11 +5,10 @@
 #include <gtest/gtest.h>
 #include <tuple>
 #include <memory>
+#include <cmath>
 #include <MemLeakTest.h>
 #include <StringUtility.h>
 #include <Square.h>
-#include <Point.h>
-
 
 using ::geometry::Point;
 using ::geometry::Square;

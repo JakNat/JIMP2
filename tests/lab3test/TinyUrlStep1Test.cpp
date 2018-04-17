@@ -11,12 +11,12 @@
 using TestParam = std::pair<std::string, std::string>;
 
 class TinyUrlStep1 : public ::testing::TestWithParam<TestParam>, MemLeakTest {
-public:
-    void FillArray(const std::string &prototype, std::array<char, 6> *arg) {
-      for (int i = 0; i < 6; ++i) {
-        (*arg)[i] = prototype[i];
-      }
+ public:
+  void FillArray(const std::string &prototype, std::array<char, 6> *arg) {
+    for (int i = 0; i < 6; ++i) {
+      (*arg)[i] = prototype[i];
     }
+  }
 };
 
 TEST_P(TinyUrlStep1, DefineMethod_NextHash) {
@@ -30,8 +30,8 @@ TEST_P(TinyUrlStep1, DefineMethod_NextHash) {
 }
 
 std::vector<TestParam> tinyUrlTestData
-        {{"000000", "000001"}, {"XYZazz", "XYZb00"}, {"099999", "09999A"}, {"0zzzzz", "100000"}, {"0ZZZZZ", "0ZZZZa"},
-         {"1zzzzz", "200000"}, {"9zzzzz", "A00000"}, {"Azzzzz", "B00000"}, {"Zzzzzz", "a00000"}, {"abcdef", "abcdeg"}};
+    {{"000000", "000001"}, {"XYZazz", "XYZb00"}, {"099999", "09999A"}, {"0zzzzz", "100000"}, {"0ZZZZZ", "0ZZZZa"},
+     {"1zzzzz", "200000"}, {"9zzzzz", "A00000"}, {"Azzzzz", "B00000"}, {"Zzzzzz", "a00000"}, {"abcdef", "abcdeg"}};
 
 INSTANTIATE_TEST_CASE_P(TinyUrlStep1Fixture,
                         TinyUrlStep1,

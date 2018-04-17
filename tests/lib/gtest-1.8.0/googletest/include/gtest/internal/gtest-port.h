@@ -399,9 +399,7 @@
 // assuming CRITICAL_SECTION is a typedef of _RTL_CRITICAL_SECTION.
 // This assumption is verified by
 // WindowsTypesTest.CRITICAL_SECTIONIs_RTL_CRITICAL_SECTION.
-// struct _RTL_CRITICAL_SECTION;
-// The assumption above causes problems with MinGW 4.8.1.
-# include <windows.h>
+struct _RTL_CRITICAL_SECTION;
 #else
 // This assumes that non-Windows OSes provide unistd.h. For OSes where this
 // is not the case, we need to include headers that provide the functions
@@ -1443,7 +1441,7 @@ void SetInjectableArgvs(const ::std::vector<testing::internal::string>*
 
 // Defines synchronization primitives.
 #if GTEST_IS_THREADSAFE
-# if GTEST_HAS_PTHREAD && !GTEST_OS_WINDOWS_MINGW
+#if GTEST_HAS_PTHREAD && !GTEST_OS_WINDOWS_MINGW
 // Sleeps for (roughly) n milliseconds.  This function is only for testing
 // Google Test's own constructs.  Don't use it in user tests, either
 // directly or indirectly.
@@ -1695,7 +1693,7 @@ class GTEST_API_ Mutex {
   // by the linker.
   MutexType type_;
   long critical_section_init_phase_;  // NOLINT
-  CRITICAL_SECTION* critical_section_;
+  _RTL_CRITICAL_SECTION* critical_section_;
 
   GTEST_DISALLOW_COPY_AND_ASSIGN_(Mutex);
 };
