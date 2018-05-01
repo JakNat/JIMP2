@@ -49,6 +49,7 @@ TEST_F(MicroDvdErrorCasesTest, IncompleteLineThrowsParsingError) {
   auto subs = make_unique<MicroDvdSubtitles>();
   stringstream in1 {"{10}{250}TEXT\n260}{220}NEWLINE\n"};
   stringstream out;
+
   EXPECT_THROW(subs->ShiftAllSubtitlesBy(1000, 24, &in1, &out),InvalidSubtitleLineFormat);
 
   stringstream in2 {"{10250}TEXT\n{260}{220}NEWLINE\n"};

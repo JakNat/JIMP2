@@ -67,6 +67,12 @@ public:
         InvalidSubtitleLineFormat(int a);
         ~InvalidSubtitleLineFormat() = default;
     };
+    class OutOfOrderFrames {
+    public:
+        OutOfOrderFrames();
+        ~OutOfOrderFrames() = default;
+    };
+    class MissingTimeSpecification{};
 }
 
 

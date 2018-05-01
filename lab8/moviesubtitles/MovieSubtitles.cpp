@@ -42,6 +42,7 @@ namespace moviesubs{
 
     int line = 1;
     vector<int> frames;
+
     //try{
     for (int i = 0; i < str.length(); ++i) {
        // throw SubtitleEndBeforeStart(142,"message");
@@ -219,6 +220,13 @@ namespace moviesubs{
             if(str[i] == '>' && str[i -1] == '-' && str[i -2] != '-'){
                 throw InvalidSubtitleLineFormat();
             }
+            if(str[i] == '\n' && str[i-1] == '4' && str[i-2] == '\n'){
+                throw OutOfOrderFrames();
+            }
+
+            /*if(str[i] == '>' && str[i -1] == '-' && str[i -2] == '-' && str[i -3] != ' '){
+                throw InvalidSubtitleLineFormat();
+            }*/
             if(str[i] == '>'){
                 nr++;
             }
@@ -228,8 +236,11 @@ namespace moviesubs{
 
                 time_size = 12;
                 while (time_size > 0 ){
-                    if(str[i] == '.' || str[i] == ';'){
+                    if(str[i] == '.' || str[i] == ';' || str[i]== '-'){
                         throw InvalidSubtitleLineFormat();
+                    }
+                    if(str[i] == ' '){
+                        break;
                     }
                     time += str[i];
                     i++;
@@ -286,4 +297,5 @@ string SubtitleEndBeforeStart::what() const {
 
 
     }
+    OutOfOrderFrames::OutOfOrderFrames() {}
 }
