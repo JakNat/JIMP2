@@ -60,8 +60,6 @@ TEST_F(IterableIteratorWrapperTests, IterableIteratorWrapperOverloadsOperatorSta
   EXPECT_FALSE(not_equals_called);
 }
 
-
-
 TEST_F(IterableIteratorWrapperTests, IterableIteratorWrapperOverloadsOperatorPreIncrementByCallingNextOfItsField) {
   std::unique_ptr<IterableIterator> test_it = std::make_unique<IteratorMock>();
   IterableIteratorWrapper wrapper{move(test_it)};
