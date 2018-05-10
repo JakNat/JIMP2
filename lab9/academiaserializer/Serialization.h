@@ -13,6 +13,7 @@
 namespace academia{
     class Serializer;
     class JsonSerializer;
+    class XmlSerializer;
     class Room;
 
 
@@ -20,7 +21,8 @@ namespace academia{
     public:
         Serializable();
         virtual void Serialize(Serializer* s) const = 0;
-    //    virtual void Serialize(JsonSerializer* s) const = 0;
+       // virtual void Serialize(JsonSerializer* s) const = 0;
+      //  virtual void Serialize(XmlSerializer* s) const = 0;
     };
 
 
@@ -34,7 +36,7 @@ namespace academia{
         std::string enumToString(Type v) const;
         Room(int id, std::string st, Type type);
         void Serialize(Serializer *s) const override;
-        //  void Serialize(JsonSerializer *s) const override ;
+
         ~Room() = default;
     private:
         int id_;
@@ -47,6 +49,7 @@ namespace academia{
         Building();
         Building(int, std::string, std::vector<Room>);
         void Serialize(Serializer *s) const override;
+
 
     private:
         int id_;
@@ -97,6 +100,11 @@ namespace academia{
         void Footer(const std::string &object_name) override;
     };
     class XmlSerializer : public Serializer{
+        private:
+        int id_;
+        std::string st_;
+        academia::Room::Type type_;
+        std::ostream *out_ ;
     public:
         XmlSerializer(std::ostream *out);
 

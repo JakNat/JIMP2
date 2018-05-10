@@ -27,12 +27,14 @@ namespace academia{
         }
     }
     void Room::Serialize(academia::Serializer *s) const {
-        s->Header("oo");
-        s->IntegerField("id", id_);
+        s->Header("room");
+
+        s->IntegerField("id",id_);
         s->StringField("name",st_);
         s->StringField("type",enumToString(type_));
-        s ->Footer("Footer");
+        s->Footer("room");
     }
+
     ////////////// Building /////////////////
     Building::Building() : Serializable() {
 
@@ -44,12 +46,12 @@ namespace academia{
     }
 
     void Building::Serialize(Serializer *s) const {
-        s->Header("");
+        s->Header("building");
         s->IntegerField("id",id_);
         s->StringField("name", name_);
         s->Array2Field("rooms",rooms_);
 
-        s->Footer("");
+        s->Footer("building");
     }
 
 
@@ -106,11 +108,11 @@ namespace academia{
 
 
     XmlSerializer::XmlSerializer(std::ostream *out) : Serializer(out) {
-
+        out_ = out;
     }
 
     void XmlSerializer::IntegerField(const std::string &field_name, int value) {
-
+        *out_ << "<" << field_name << ">" << value << "<\\" << field_name << ">";
     }
 
     void XmlSerializer::DoubleField(const std::string &field_name, double value) {
@@ -118,7 +120,7 @@ namespace academia{
     }
 
     void XmlSerializer::StringField(const std::string &field_name, const std::string &value) {
-
+        *out_ << "<" << field_name << ">" << value << "<\\" << field_name << ">";
     }
 
     void XmlSerializer::BooleanField(const std::string &field_name, bool value) {
@@ -135,14 +137,20 @@ namespace academia{
     }
 
     void XmlSerializer::Header(const std::string &object_name) {
-
+        *out_ << "<" << object_name << ">";
     }
 
     void XmlSerializer::Footer(const std::string &object_name) {
-
+        *out_ << "<\\" << object_name << ">";
     }
 
     void XmlSerializer::Array2Field(const std::string &field_name, const std::vector<Room> &value) {
+        *out_ << "<" << field_name << ">";
 
+        XmlSerializer serializer{out_};
+        for (int i = 0; i < value.size(); ++i) {
+            value[i].Serialize(&serializer);
+        }
+        *out_ << "<\\" << field_name << ">";
     }
 }
