@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <experimental/optional>
 
 namespace academia{
     class Serializer;
@@ -49,16 +50,33 @@ namespace academia{
         Building();
         Building(int, std::string, std::vector<Room>);
         void Serialize(Serializer *s) const override;
+        Building value();
+        int Id();
 
 
-    private:
+
         int id_;
         std::string  name_;
         std::vector<Room> rooms_;
-
+        std::vector<std::reference_wrapper<const Serializable>> roomsW_;
 
     };
 
+
+    class BuildingRepository {
+    private:
+        std::vector<Building> buildings;
+    public:
+        BuildingRepository();
+        ~BuildingRepository() = default;
+        BuildingRepository(Building);
+        void Add(Building);
+        void StoreAll(Serializer *serializer) const;
+        int Id();
+        std::experimental::optional<Building> operator[](int i) const ;
+
+    };
+/////////////////////
 
     class Serializer{
     public:
@@ -74,8 +92,7 @@ namespace academia{
         virtual void Header(const std::string &object_name) = 0;
         virtual void Footer(const std::string &object_name) = 0;
 
-        virtual void Array2Field(const std::string &field_name,
-                        const  std::vector<Room> &value) = 0;
+
 
     };
     class JsonSerializer : public Serializer{
@@ -94,8 +111,7 @@ namespace academia{
         void SerializableField(const std::string &field_name, const Serializable &value) override;
         void ArrayField(const std::string &field_name,
                         const std::vector<std::reference_wrapper<const Serializable>> &value) override;
-        void Array2Field(const std::string &field_name,
-                        const  std::vector<Room> &value) override ;
+
         void Header(const std::string &object_name) override;
         void Footer(const std::string &object_name) override;
     };
@@ -125,7 +141,6 @@ namespace academia{
 
         void Footer(const std::string &object_name) override;
 
-        void Array2Field(const std::string &field_name, const std::vector<Room> &value) override;
 
 
     };
