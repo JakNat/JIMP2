@@ -105,51 +105,98 @@ Schedule GreedyScheduler::PrepareNewSchedule(const std::vector<int> &rooms,
                                              const std::map<int, std::vector<int>> &teacher_courses_assignment,
                                              const std::map<int, std::set<int>> &courses_of_year, int n_time_slots) {
     Schedule schedule;
+
+    int scheduling_items_s = 0;
     int lessonsAmount = 0;
     int yearsAmount = 0;
-    map <int,int> lessonAmountPerYear;
-    for (auto year : courses_of_year){
+    map<int, int> lessonAmountPerYear;
+    for (auto year : teacher_courses_assignment) {
         yearsAmount++;
-        std::pair<int,int> p (yearsAmount,0);
-     //   lessonAmountPerYear.insert(YearsAmount,0);
-        for( auto lesson : year.second){
+        std::pair<int, int> p(yearsAmount, 0);
+        //   lessonAmountPerYear.insert(YearsAmount,0);
+        for (auto lesson : year.second) {
             lessonsAmount++;
             lessonAmountPerYear[yearsAmount]++;
         }
-    }if(lessonsAmount > n_time_slots * rooms.size()){
-        throw NoViableSolutionFound();
     }
-    for(auto room : rooms){
-
-        for (int i = 0; i < n_time_slots; ++i) {
-            for(auto year : courses_of_year){
-                int y = year.first;
-                for(auto lesson : year.second){
-                    int l = lesson;
-                    bool a = false;
-                   for(auto teacher : teacher_courses_assignment){
-                       for(auto teacherLesson : teacher.second){
-                           if(a){ break;}
-                           if (teacherLesson == lesson){
-                               schedule.InsertScheduleItem(SchedulingItem(lesson,teacher.first,room,i,year.first));
-                                lessonsAmount--;
-                                teacherLesson = 0;
-                                if(lessonsAmount == 0){ return schedule;}
-                               i++;
-                               a = true;
-                               break;
-                           }
-                       }
-                   }
+    int x = 0;
+    for (auto teacher : teacher_courses_assignment) {
+        for (auto lesson : teacher.second) {
+            for (auto year : courses_of_year) {
+                for (auto lessonYear : year.second) {
+                    if (lesson == lessonYear && year.first == 1) {
+                        x++;
+                    }
                 }
             }
         }
     }
-    int x = lessonAmountPerYear[1];
+    if (x > n_time_slots) {
+        throw NoViableSolutionFound();
+    }
+    if (lessonsAmount > n_time_slots * rooms.size()) {
+        throw NoViableSolutionFound();
+    }
+    for (auto room : rooms) {
+        for (int i = 0; i < n_time_slots; ++i) {
+            for (auto teacher : teacher_courses_assignment) {
+                int y = teacher.first;
+                for (auto lesson : teacher.second) {
+                    int l = lesson;
+                    bool a = false;
+                    for (auto year : courses_of_year) {
+                        for (auto yearLesson : year.second) {
+                            if (a) { break; }
+                            if (yearLesson == lesson) {
+                                schedule.InsertScheduleItem(SchedulingItem(lesson, teacher.first, room, i, year.first));
 
-    return schedule;
+                                scheduling_items_s++;
+                                lessonsAmount--;
+                                yearLesson = 0;
+                                if (lessonsAmount == 0) { return schedule; }
+                                i++;
+                                a = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (auto room : rooms) {
+
+            for (int i = 0; i < n_time_slots; ++i) {
+                for (auto year : courses_of_year) {
+                    int y = year.first;
+                    for (auto lesson : year.second) {
+                        int l = lesson;
+                        bool a = false;
+                        for (auto teacher : teacher_courses_assignment) {
+                            for (auto teacherLesson : teacher.second) {
+                                if (a) { break; }
+                                if (teacherLesson == lesson) {
+                                    schedule.InsertScheduleItem(
+                                            SchedulingItem(lesson, teacher.first, room, i, year.first));
+
+                                    scheduling_items_s++;
+                                    lessonsAmount--;
+                                    teacherLesson = 0;
+                                    if (lessonsAmount == 0) { return schedule; }
+                                    i++;
+                                    a = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+//    int x = lessonAmountPerYear[1];
+
+        return schedule;
     }
 
 
-
-}
+}}
